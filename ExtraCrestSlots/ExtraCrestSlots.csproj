@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>1.0.0.22</Version>
+		<Version>1.0.0.23</Version>
 		<AssemblyName>ExtraCrestSlots</AssemblyName>
 		<RootNamespace>ExtraCrestSlots</RootNamespace>
 		<TargetFramework>net472</TargetFramework>
@@ -26,6 +26,9 @@
 		<Reference Private="false" Include="UnityEngine.TextRenderingModule" HintPath="$(SilksongManagedFolder)/UnityEngine.TextRenderingModule.dll" />
 		<Reference Private="false" Include="UnityMod" HintPath="$(SharedDir)/UnityMod-net472.dll" />
 		<Reference Private="false" Include="Newtonsoft.Json" HintPath="$(SharedDir)/non-public/lib/Newtonsoft.Json.dll" />
+		
+		<Compile Include="$(SharedDir)General/Attributes.cs" Link="Shared/Attributes.cs" />
+		<Compile Include="$(SharedDir)General/JsonNewtonsoft.cs" Link="Shared/JsonNewtonsoft.cs" />
 	</ItemGroup>
 
 	<!-- Target Automation -->
