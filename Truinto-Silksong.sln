@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silksong", "Silksong\Silksong.csproj", "{34C969C2-F4EE-4A21-90DE-3B625DF35B4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraCrestSlots", "SilkTools\ExtraCrestSlots.csproj", "{5E09E19C-66BB-4387-A3CA-BDEC3D6BC73B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34C969C2-F4EE-4A21-90DE-3B625DF35B4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34C969C2-F4EE-4A21-90DE-3B625DF35B4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34C969C2-F4EE-4A21-90DE-3B625DF35B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34C969C2-F4EE-4A21-90DE-3B625DF35B4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E09E19C-66BB-4387-A3CA-BDEC3D6BC73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E09E19C-66BB-4387-A3CA-BDEC3D6BC73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E09E19C-66BB-4387-A3CA-BDEC3D6BC73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E09E19C-66BB-4387-A3CA-BDEC3D6BC73B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {422DE067-2CC5-476A-A2E7-147128987C66}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<SilksongManagedFolder>C:/Games/Hollow Knight Silksong/Hollow Knight Silksong_Data/Managed</SilksongManagedFolder>
+		<SilksongModFolder>C:/Games/Hollow Knight Silksong/BepInEx/plugins</SilksongModFolder>
+	</PropertyGroup>
+</Project>
