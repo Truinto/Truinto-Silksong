@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Version>1.0.0.22</Version>
+		<AssemblyName>ExtraCrestSlots</AssemblyName>
+		<RootNamespace>ExtraCrestSlots</RootNamespace>
+		<TargetFramework>net472</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Private="false" Include="0Harmony" HintPath="$(SilksongModFolder)/../core/0Harmony.dll" />
+		<Reference Private="false" Include="BepInEx" HintPath="$(SilksongModFolder)/../core/BepInEx.dll" />
+		<Reference Private="false" Include="Assembly-CSharp" HintPath="$(SilksongManagedFolder)/Assembly-CSharp.dll" Publicize="true" />
+		<Reference Private="false" Include="TeamCherry.TK2D" HintPath="$(SilksongManagedFolder)/TeamCherry.TK2D.dll" Publicize="true" />
+		<Reference Private="false" Include="TeamCherry.Localization" HintPath="$(SilksongManagedFolder)/TeamCherry.Localization.dll" />
+		<Reference Private="false" Include="TeamCherry.SharedUtils" HintPath="$(SilksongManagedFolder)/TeamCherry.SharedUtils.dll" />
+		<Reference Private="false" Include="UnityEngine" HintPath="$(SilksongManagedFolder)/UnityEngine.dll" />
+		<Reference Private="false" Include="UnityEngine.CoreModule" HintPath="$(SilksongManagedFolder)/UnityEngine.CoreModule.dll" />
+		<Reference Private="false" Include="UnityEngine.InputLegacyModule" HintPath="$(SilksongManagedFolder)/UnityEngine.InputLegacyModule.dll" />
+		<Reference Private="false" Include="UnityEngine.Physics2DModule" HintPath="$(SilksongManagedFolder)/UnityEngine.Physics2DModule.dll" />
+		<Reference Private="false" Include="UnityEngine.UI" HintPath="$(SilksongManagedFolder)/UnityEngine.UI.dll" />
+		<Reference Private="false" Include="UnityEngine.AnimationModule" HintPath="$(SilksongManagedFolder)/UnityEngine.AnimationModule.dll" />
+		<Reference Private="false" Include="UnityEngine.IMGUIModule" HintPath="$(SilksongManagedFolder)/UnityEngine.IMGUIModule.dll" />
+		<Reference Private="false" Include="UnityEngine.TextRenderingModule" HintPath="$(SilksongManagedFolder)/UnityEngine.TextRenderingModule.dll" />
+		<Reference Private="false" Include="UnityMod" HintPath="$(SharedDir)/UnityMod-net472.dll" />
+		<Reference Private="false" Include="Newtonsoft.Json" HintPath="$(SharedDir)/non-public/lib/Newtonsoft.Json.dll" />
+	</ItemGroup>
+
+	<!-- Target Automation -->
+	<ItemGroup>
+		<VersioningTask_In Include="$(MSBuildThisFileFullPath)" />
+		<VersioningTask_In Include="changelog.md" />
+		<VersioningTask_Out Include="$(MSBuildThisFileFullPath)" />
+
+		<TargetMergeItems Include="$(SharedDir)/UnityMod-net472.dll" />
+
+		<TargetCopyTarget Include="$(SilksongModFolder)/" />
+		<TargetCopyDelete Include="$(SilksongModFolder)/$(TargetName).xml" />
+
+		<TargetZipItems Include="$(SilksongModFolder)/$(TargetName).dll" />
+		<TargetZipTarget Include="$(SolutionDir)/publish/$(TargetName).zip" />
+	</ItemGroup>
+</Project>
