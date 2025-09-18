@@ -15,6 +15,12 @@ namespace ExtraCrestSlots
 
         [JsonInclude] public int Version = 1;
 
+        [JsonInclude]
+        public List<SettingCrest> Slots = new()
+        {
+            new() { CrestID = "ALL", SlotCount = 6, PositionX = -4.5f, PositionY = -3.5f },
+        };
+
         public void Save()
         {
             JsonTool.SerializeFile(FilePath!, this);
