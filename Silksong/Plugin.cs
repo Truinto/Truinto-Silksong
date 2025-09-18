@@ -16,25 +16,6 @@ namespace TruintoSilksong
             Logger.LogMessage($"Plugin loaded");
         }
 
-        /// <summary>
-        /// Reduce some damage to 1. Also reduces the damage effect sound.
-        /// </summary>
-        [HarmonyPatch(typeof(HeroController), nameof(HeroController.TakeDamage))]
-        [HarmonyTranspiler]
-        public static IEnumerable<CodeInstruction> TranspilerLessDamage(IEnumerable<CodeInstruction> code, ILGenerator generator, MethodBase original)
-        {
-            var tool = new TranspilerTool(code, generator, original);
-            tool.Seek(typeof(DeliveryQuestItem), nameof(DeliveryQuestItem.TakeHit), [typeof(int)]);
-            tool.InsertAfter(patch);
-            return tool;
-
-            static void patch(ref int damageAmount)
-            {
-                if (damageAmount > 1)
-                    damageAmount = 1;
-            }
-        }
-
         public static NailImbuementConfig? CoatingPoison;
         public static NailImbuementConfig? CoatingFire;
 
@@ -85,6 +66,42 @@ namespace TruintoSilksong
                     __instance.AddSilkParts(1);
             }
         }
+
+        private static ToolItem? Magnet;
+        [HarmonyPatch(typeof(CurrencyObjectBase), nameof(CurrencyObjectBase.MagnetToolIsEquipped))]
+        [HarmonyPrefix]
+        [HarmonyPriority(Priority.Low)]
+        public static bool MagnetShards(CurrencyObjectBase __instance, ref bool __result)
+        {
+            if (__instance is ShellShard && (Magnet ??= ToolItemManager.GetToolByName("Rosary Magnet")) && Magnet.IsEquipped)
+            {
+                __result = true;
+                return false;
+            }
+            return true;
+        }
+
+        //private static ToolItem? MagnetTool;
+        //private static ToolItem? MagnetBuff;
+        //private static GameObject? MagnetEffect;
+        //[HarmonyPatch(typeof(CurrencyObjectBase), nameof(CurrencyObjectBase.Awake))]
+        //[HarmonyPrefix]
+        //[HarmonyPriority(Priority.Low)]
+        //public static void MagnetShards(CurrencyObjectBase __instance)
+        //{
+        //    if (__instance is GeoControl)
+        //    {
+        //        MagnetTool = __instance.magnetTool;
+        //        MagnetBuff = __instance.magnetBuffTool;
+        //        MagnetEffect = __instance.magnetEffect;
+        //    }
+        //    else if (__instance is ShellShard)
+        //    {
+        //        __instance.magnetTool = MagnetTool;
+        //        __instance.magnetBuffTool = MagnetBuff;
+        //        __instance.magnetEffect = MagnetEffect;
+        //    }
+        //}
 
         //[HarmonyPatch(typeof(tk2dSpriteAnimation), nameof(tk2dSpriteAnimation.ValidateLookup))]
         //[HarmonyPrefix]
