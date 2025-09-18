@@ -16,41 +16,6 @@ namespace TruintoSilksong
             Logger.LogMessage($"Plugin loaded");
         }
 
-        public static NailImbuementConfig? CoatingPoison;
-        public static NailImbuementConfig? CoatingFire;
-
-        [HarmonyPatch(typeof(HeroNailImbuement), nameof(HeroNailImbuement.Update))]
-        [HarmonyPostfix]
-        public static void HeroNailImbuements(HeroNailImbuement __instance)
-        {
-            if (__instance.CurrentElement != NailElements.None)
-            { }
-            else if (GlobalSettings.Gameplay.PoisonPouchTool.IsEquipped)
-                __instance.currentImbuement = CoatingPoison ??= cloneCoating(NailElements.Poison);
-            else if (ToolItemManager.IsToolEquipped("Flintstone"))
-                __instance.currentImbuement = CoatingFire ??= cloneCoating(NailElements.Fire);
-            return;
-
-            NailImbuementConfig cloneCoating(NailElements element)
-            {
-                var result = Instantiate(__instance.nailConfigs[(int)element]);
-                //Debug.Log($"COATING: {element}" +
-                //    $"\n\tTag = {result.DamageTag}" +
-                //    $"\n\tDamageTagTicksOverride = {result.DamageTagTicksOverride}" +
-                //    $"\n\tInertHitEffect = {result.InertHitEffect}" +
-                //    $"\n\tLagHits = {result.LagHits}" +
-                //    $"\n\tNailDamageMultiplier = {result.NailDamageMultiplier}" +
-                //    $"\n\tSlashEffect = {result.SlashEffect}" +
-                //    $"\n\tStartHitEffect = {result.StartHitEffect}");
-                result.Duration = float.PositiveInfinity;
-                result.ExtraSlashAudio = default;
-                result.HeroFlashing = default;
-                result.HeroParticles = default;
-                //result.NailDamageMultiplier = (result.NailDamageMultiplier + 1f) / 2;
-                return result;
-            }
-        }
-
         [HarmonyPatch(typeof(HeroController), nameof(HeroController.SilkGain), typeof(HitInstance))]
         [HarmonyPostfix]
         public static void MultiHitSilk(HitInstance hitInstance, HeroController __instance)
