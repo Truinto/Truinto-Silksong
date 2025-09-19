@@ -13,6 +13,8 @@ namespace ExtraCrestSlots
         public float PositionX;
         public float PositionY;
         public SlotType SlotType;
+        public bool IsLocked;
+        public int? OverrideSlot;
     }
 
     public enum SlotType

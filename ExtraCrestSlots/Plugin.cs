@@ -43,13 +43,46 @@ namespace ExtraCrestSlots
 
             void addSlots(ref ToolCrest.SlotInfo[] slots, SettingCrest setting)
             {
+                // alt logic: change original slot
+                int overrideSlot = setting.OverrideSlot ?? -1;
+                if (overrideSlot >= 0)
+                {
+                    if (overrideSlot >= slots.Length)
+                        return;
+                    slots[overrideSlot].Type = setting.SlotType switch
+                    {
+                        SlotType.Auto => slots[overrideSlot].Type,
+                        SlotType.Blue => ToolItemType.Blue,
+                        SlotType.Yellow => ToolItemType.Yellow,
+                        SlotType.RedUp => ToolItemType.Red,
+                        SlotType.RedNeutral => ToolItemType.Red,
+                        SlotType.RedDown => ToolItemType.Red,
+                        SlotType.WhiteUp => ToolItemType.Skill,
+                        SlotType.WhiteNeutral => ToolItemType.Skill,
+                        SlotType.WhiteDown => ToolItemType.Skill,
+                        _ => ToolItemType.Blue
+                    };
+                    slots[overrideSlot].AttackBinding = setting.SlotType switch
+                    {
+                        SlotType.RedUp => AttackToolBinding.Up,
+                        SlotType.RedNeutral => AttackToolBinding.Neutral,
+                        SlotType.WhiteUp => AttackToolBinding.Up,
+                        SlotType.WhiteNeutral => AttackToolBinding.Neutral,
+                        _ => AttackToolBinding.Down
+                    };
+                    return;
+                }
+
+                // sanitize
                 if (setting.SlotCount is <= 0 or > 20)
                     setting.SlotCount = 1;
 
-                bool nextRedDown = false;
+                // increase slots
                 int length_old = slots.Length;
                 Array.Resize(ref slots, slots.Length + setting.SlotCount);
 
+                // check if any skill uses the down binding
+                bool nextRedDown = false;
                 if (setting.SlotType is SlotType.Auto)
                 {
                     nextRedDown = true;
@@ -61,12 +94,13 @@ namespace ExtraCrestSlots
                     }
                 }
 
+                // set new slots
                 float x = setting.PositionX;
                 for (int i = length_old; i < slots.Length; i++)
                 {
                     slots[i] = new()
                     {
-                        IsLocked = false,
+                        IsLocked = setting.IsLocked,
                         Position = new Vector2(x, setting.PositionY),
                         NavUpFallbackIndex = -1,
                         NavDownFallbackIndex = -1,
@@ -95,47 +129,6 @@ namespace ExtraCrestSlots
                         _ => AttackToolBinding.Down
                     };
                     nextRedDown = false;
-                    x += 1.5f;
-                }
-            }
-
-            void addBottomSlots(ref ToolCrest.SlotInfo[] slots)
-            {
-                bool toolDown = false;
-                int length_old = slots.Length;
-                Array.Resize(ref slots, slots.Length + 6);
-
-                // NavIndex points to the slot index you get when pressing that button
-                // change all down -1 to first custom slot
-                for (int i = 0; i < length_old; i++)
-                {
-                    if (slots[i].NavDownIndex < 0)
-                        slots[i].NavDownIndex = length_old;
-                    if (slots[i].Type is ToolItemType.Red or ToolItemType.Skill
-                        && slots[i].AttackBinding is AttackToolBinding.Down)
-                        toolDown = true;
-                }
-
-                // use left and right to scroll through custom slots
-                float x = -4.5f;
-                for (int i = length_old; i < slots.Length; i++)
-                {
-                    slots[i] = new()
-                    {
-                        Type = !toolDown ? ToolItemType.Red : ToolItemType.Blue,
-                        AttackBinding = AttackToolBinding.Down,
-                        IsLocked = false,
-                        Position = new Vector2(x, -3.5f),
-                        NavUpFallbackIndex = -1,
-                        NavDownFallbackIndex = -1,
-                        NavLeftFallbackIndex = -1,
-                        NavRightFallbackIndex = -1,
-                        NavUpIndex = -1,
-                        NavDownIndex = -1,
-                        NavLeftIndex = i == length_old ? slots.Length - 1 : (i - 1),
-                        NavRightIndex = i >= slots.Length ? -1 : (i + 1),
-                    };
-                    toolDown = true;
                     x += 1.5f;
                 }
             }
