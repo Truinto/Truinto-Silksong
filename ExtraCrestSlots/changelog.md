@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0]
+- fixed an issue that would duplicate the new slots, during quit-out and reload
+- changed 'IsLocked' to also apply to override slots
+- changed 'SlotCount' to allow batch processing for override slots
+
 ## [1.0.1]
 - added option 'IsLocked' to have the slot locked (does not add more unlock medallions); not recommended
 - added option 'OverrideSlot' to override color and binding of existing slots

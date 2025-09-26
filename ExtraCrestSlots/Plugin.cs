@@ -16,10 +16,15 @@ namespace ExtraCrestSlots
             Logger.LogMessage($"Plugin loaded");
         }
 
+        private static bool OnceAddToolSlots;
         [HarmonyPatch(typeof(ToolItemManager), nameof(ToolItemManager.Awake))]
         [HarmonyPostfix]
         public static void AddToolSlots(ToolItemManager __instance)
         {
+            if (OnceAddToolSlots)
+                return;
+            OnceAddToolSlots = true;
+
             Debug.Log($"CRESTS:");
             foreach (var item in __instance.crestList)
             {
@@ -43,39 +48,43 @@ namespace ExtraCrestSlots
 
             void addSlots(ref ToolCrest.SlotInfo[] slots, SettingCrest setting)
             {
+                // sanitize
+                if (setting.SlotCount is <= 0 or > 50)
+                    setting.SlotCount = 1;
+
                 // alt logic: change original slot
                 int overrideSlot = setting.OverrideSlot ?? -1;
                 if (overrideSlot >= 0)
                 {
-                    if (overrideSlot >= slots.Length)
-                        return;
-                    slots[overrideSlot].Type = setting.SlotType switch
+                    for (int i = 0; i < setting.SlotCount && overrideSlot < slots.Length; i++, overrideSlot++)
                     {
-                        SlotType.Auto => slots[overrideSlot].Type,
-                        SlotType.Blue => ToolItemType.Blue,
-                        SlotType.Yellow => ToolItemType.Yellow,
-                        SlotType.RedUp => ToolItemType.Red,
-                        SlotType.RedNeutral => ToolItemType.Red,
-                        SlotType.RedDown => ToolItemType.Red,
-                        SlotType.WhiteUp => ToolItemType.Skill,
-                        SlotType.WhiteNeutral => ToolItemType.Skill,
-                        SlotType.WhiteDown => ToolItemType.Skill,
-                        _ => ToolItemType.Blue
-                    };
-                    slots[overrideSlot].AttackBinding = setting.SlotType switch
-                    {
-                        SlotType.RedUp => AttackToolBinding.Up,
-                        SlotType.RedNeutral => AttackToolBinding.Neutral,
-                        SlotType.WhiteUp => AttackToolBinding.Up,
-                        SlotType.WhiteNeutral => AttackToolBinding.Neutral,
-                        _ => AttackToolBinding.Down
-                    };
+                        slots[overrideSlot].Type = setting.SlotType switch
+                        {
+                            SlotType.Auto => slots[overrideSlot].Type,
+                            SlotType.Blue => ToolItemType.Blue,
+                            SlotType.Yellow => ToolItemType.Yellow,
+                            SlotType.RedUp => ToolItemType.Red,
+                            SlotType.RedNeutral => ToolItemType.Red,
+                            SlotType.RedDown => ToolItemType.Red,
+                            SlotType.WhiteUp => ToolItemType.Skill,
+                            SlotType.WhiteNeutral => ToolItemType.Skill,
+                            SlotType.WhiteDown => ToolItemType.Skill,
+                            _ => ToolItemType.Blue
+                        };
+                        slots[overrideSlot].AttackBinding = setting.SlotType switch
+                        {
+                            SlotType.Auto => slots[overrideSlot].AttackBinding,
+                            SlotType.RedUp => AttackToolBinding.Up,
+                            SlotType.RedNeutral => AttackToolBinding.Neutral,
+                            SlotType.WhiteUp => AttackToolBinding.Up,
+                            SlotType.WhiteNeutral => AttackToolBinding.Neutral,
+                            _ => AttackToolBinding.Down
+                        };
+                        if (setting.IsLocked.HasValue)
+                            slots[overrideSlot].IsLocked = setting.IsLocked.Value;
+                    }
                     return;
                 }
-
-                // sanitize
-                if (setting.SlotCount is <= 0 or > 20)
-                    setting.SlotCount = 1;
 
                 // increase slots
                 int length_old = slots.Length;
@@ -100,7 +109,7 @@ namespace ExtraCrestSlots
                 {
                     slots[i] = new()
                     {
-                        IsLocked = setting.IsLocked,
+                        IsLocked = setting.IsLocked ?? false,
                         Position = new Vector2(x, setting.PositionY),
                         NavUpFallbackIndex = -1,
                         NavDownFallbackIndex = -1,

@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>1.0.0.0</Version>
+		<Version>1.0.1.9</Version>
 		<AssemblyName>NeedleCoating</AssemblyName>
 		<RootNamespace>NeedleCoating</RootNamespace>
 		<TargetFramework>net472</TargetFramework>
