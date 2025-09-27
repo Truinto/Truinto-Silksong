@@ -27,7 +27,8 @@ Start discussion on Github.
 
 Content
 -----------
-* ExtraCrestSlots: Adds extra slots to crests.
+* ExtraCrestSlots: Adds extra slots to crests or edit them.
+* EasyFleaFestival: Flea festival games never fail, making high score easy.
 * NeedleCoating: Flintstone and Pollip Pouch are always active. Option to modify damage multiplier.
 * YetAnotherDamageCap: Limits damage to 1 HP. Removes the critical hit audio. No menu clutter, just works.
 
